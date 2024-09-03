@@ -19,5 +19,5 @@ const convoSchema =new mongoose.Schema(
     {timestamps:true}
 )
 
-const convoModel= new mongoose.Model("Conversation",convoSchema)
- export default convoModel;
+const ConvoModel= new mongoose.Model("Conversation",convoSchema)
+ export default ConvoModel;
