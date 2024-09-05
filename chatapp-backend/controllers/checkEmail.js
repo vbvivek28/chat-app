@@ -6,8 +6,10 @@ try{
      const checkEmail= await UserModel.findOne({email}).select("-password")
      if(checkEmail){
       return res.status(200).json({
-        message:"user found",
-        body:checkEmail
+        message:"User found",
+        data:checkEmail,
+        success:true
+
       })
      }
      else{

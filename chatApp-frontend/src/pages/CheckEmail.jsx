@@ -10,7 +10,7 @@ function CheckEmail() {
     email:""
   })
 
-const navigate =useNavigate();
+const navigate = useNavigate();
 
   const handleOnChange=(e)=>{
     const {name,value}= e.target
@@ -32,15 +32,15 @@ const navigate =useNavigate();
       try {
         const response= await axios.post(URL,data) 
         toast.success(response.data.message)
-
-        if(response.data.success)
+        console.log(response)
+        if(response.status == 200)
         {
           setData(
             {
               email:""
             }
           )
-          navigate('/password')
+          navigate('/password',{state:response?.data?.data})
         }
       } catch (error) {
         toast.error(error?.response?.data?.message)
@@ -73,9 +73,9 @@ const navigate =useNavigate();
              required
            /> 
             </div>
-              <button className="bg-primary hover:bg-violet-800 text-lg px-4 py-1 rounded mt-2 font-bold text-white leading-relaxed ">Register</button>
+              <button className="bg-primary hover:bg-violet-800 text-lg px-4 py-1 rounded mt-2 font-bold text-white leading-relaxed ">Login</button>
         </form>
-        <p className="my-3 text-center">New User ? <Link to={"/register"} className="hover:text-primary font-semibold">Login</Link></p>
+        <p className="my-3 text-center">New User ? <Link to={"/register"} className="hover:text-primary font-semibold">Register</Link></p>
       </div>
     </div>
     </>
