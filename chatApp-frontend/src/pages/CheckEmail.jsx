@@ -1,8 +1,10 @@
-import React from 'react'
+import { Outlet } from 'react-router-dom'
 
 function CheckEmail() {
-  return (
+  return (<>
     <div>CheckEmail</div>
+    <Outlet/>
+    </>
   )
 }
 
