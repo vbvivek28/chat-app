@@ -1,8 +1,83 @@
-import { Outlet } from 'react-router-dom'
-
+import React,{useState} from "react"
+import { IoClose } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import {PiUserCircle} from "react-icons/pi"
 function CheckEmail() {
+  
+  const [data,setData]= useState({
+    email:""
+  })
+
+const navigate =useNavigate();
+
+  const handleOnChange=(e)=>{
+    const {name,value}= e.target
+
+    setData((prev)=>{
+      return{
+        ...prev,
+        [name]:value
+      }
+    })
+  }
+
+
+    const handleSubmit = async(e)=>{
+      e.preventDefault()
+      e.stopPropagation()
+
+      const URL=`${import.meta.env.VITE_BACKEND_URL}/api/email`
+      try {
+        const response= await axios.post(URL,data) 
+        toast.success(response.data.message)
+
+        if(response.data.success)
+        {
+          setData(
+            {
+              email:""
+            }
+          )
+          navigate('/password')
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message)
+      }
+    
+
+    }
+
   return (<>
-    <div>CheckEmail</div>
+    <div className="mt-5">
+      <div className="bg-white w-full max-w-md rounded overflow-hidden p-4 mx-auto">
+
+<div className="w-fit mx-auto">
+  <PiUserCircle size={80}/>
+</div>
+        <h3>Welcome to Chat app!</h3>
+
+        <form className="grid gap-4 mt-5 " onSubmit={handleSubmit}>
+        
+            <div className="flex flex-col gap-1">
+            <label htmlFor="email">Email:</label> 
+            <input 
+             type='email'
+             id='email'
+             name='email'
+             placeholder="enter your email"
+             className="bg-slate-100 px-2 py-1 focus:outline-primary"
+             value={data.email}
+             onChange={handleOnChange}
+             required
+           /> 
+            </div>
+              <button className="bg-primary hover:bg-violet-800 text-lg px-4 py-1 rounded mt-2 font-bold text-white leading-relaxed ">Register</button>
+        </form>
+        <p className="my-3 text-center">New User ? <Link to={"/register"} className="hover:text-primary font-semibold">Login</Link></p>
+      </div>
+    </div>
     </>
   )
 }
