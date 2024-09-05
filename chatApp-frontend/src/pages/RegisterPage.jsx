@@ -71,6 +71,7 @@ const navigate =useNavigate();
           navigate('/email')
         }
       } catch (error) {
+        console.log(error)
         toast.error(error?.response?.data?.message)
       }
     
