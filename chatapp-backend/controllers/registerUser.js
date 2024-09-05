@@ -1,9 +1,9 @@
 import UserModel from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 
-export default async function resgisterUser(req,res){
+async function resgisterUser(req,res){
     try{
-        const {name, email, password, profile_pic}=req.body;
+        const {name, email, password, profile_pic} = req.body;
         const checkEmail =await UserModel.findOne({email})
         
         if(checkEmail){
@@ -40,3 +40,4 @@ export default async function resgisterUser(req,res){
     }
 }
 
+export default resgisterUser;
