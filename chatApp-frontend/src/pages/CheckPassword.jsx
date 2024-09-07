@@ -2,8 +2,9 @@ import React,{useEffect, useState} from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import {PiUserCircle} from "react-icons/pi"
 import Avatar from "../components/Avatar";
+import { useDispatch } from "react-redux";
+import { setToken } from "../redux/userSlice";
 function CheckPassword() {
   
   const [data,setData]= useState({
@@ -12,9 +13,11 @@ function CheckPassword() {
 
 const navigate = useNavigate();
 const location = useLocation();
+const dispatch = useDispatch();
+console.log(location)
 
 useEffect(() => {
-  if (location  && !location?.state?.name) {
+  if (!location?.state?.name) {
     navigate('/email');
   }
 }, [location]);
@@ -37,17 +40,27 @@ useEffect(() => {
 
       const URL=`${import.meta.env.VITE_BACKEND_URL}/api/password`
       try {
-        const response= await axios.post(URL,{userId: location?.state?._id,password:data.password}) 
-        toast.success(response.data.message)
-        if(response.status == 200)
-        {
+        const response = await axios({
+          method: 'POST',
+          url: URL,
+          data: { 
+            userId: location?.state?._id,
+            password: data.password 
+          },
+          withCredentials: true 
+      });
+        console.log(response)
+        if(response.status == 200){
+          dispatch(setToken(response?.data?.token))
+          localStorage.setItem('token', response?.data?.token)
           setData(
             {
               password:""
             }
-          )
+          ) 
           navigate('/')
-        }
+        } 
+        toast.success(response?.data?.message)
       } catch (error) {
         toast.error(error?.response?.data?.message)
       }

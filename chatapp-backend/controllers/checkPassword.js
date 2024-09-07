@@ -21,7 +21,8 @@ async function checkPassword(req,res){
         if(verifyPassword){
             return res.cookie("token",token,cookieOption).status(200).json({
                 message:"user login successfully",
-                data: user
+                token:token,
+                success:true
 
             })
            
